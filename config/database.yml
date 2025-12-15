@@ -1,0 +1,25 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  username: postgres
+  password: deus
+
+development:
+  <<: *default
+  database: gerenciador_restaurante
+  username: postgres
+  password: deus
+  host: localhost
+  port: 5432
+
+test:
+  <<: *default
+  database: gerenciador_restaurante_test
+
+production:
+  <<: *default
+  database: gerenciador_restaurante_production
+  username: postgres
+  password: <%= ENV["GERENCIADOR_RESTAURANTE_DATABASE_PASSWORD"] %>
