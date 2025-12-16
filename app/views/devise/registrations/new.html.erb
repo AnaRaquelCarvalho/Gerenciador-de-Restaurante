@@ -1,0 +1,31 @@
+<h2 class="text-2xl font-bold text-center mb-6">Cadastro</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+
+  <div class="mb-4">
+    <%= f.label :email %>
+    <%= f.email_field :email,
+      class: "w-full bg-white border border-gray-500 rounded px-3 py-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :password %>
+    <%= f.password_field :password,
+      class: "w-full bg-white border border-gray-500 rounded px-3 py-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation,
+      class: "w-full bg-white border border-gray-500 rounded px-3 py-2" %>
+  </div>
+
+  <%= f.submit "Cadastrar",
+    class: "w-full bg-red-600 text-white py-2 rounded" %>
+
+<% end %>
+
+<div class="mt-4 text-center">
+  <%= link_to "Já tenho conta", new_admin_session_path,
+      class: "text-red-600 underline" %>
+</div>
