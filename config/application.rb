@@ -16,8 +16,24 @@ module GerenciadorDeRestaurante
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # ===============================
+    # ✅ CONFIGURAÇÃO DE ASSETS (Rails 8)
+    # ===============================
+
+    # Garante que imagens em app/assets/images sejam servidas
+    config.assets.paths << Rails.root.join("app/assets/images")
+
+    # Garante que imagens sejam compiladas
+    config.assets.precompile += %w[
+      *.png
+      *.jpg
+      *.jpeg
+      *.svg
+      *.webp
+    ]
+
+    # ===============================
     # Configuration for the application, engines, and railties goes here.
-    #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
