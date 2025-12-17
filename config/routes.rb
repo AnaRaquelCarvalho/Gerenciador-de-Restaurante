@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
+  # Devise para admins
   devise_for :admins
 
+  # Root para admin autenticado
   authenticated :admin do
-    root to: "admin#index", as: :authenticated_root
+    root to: "admin#index", as: :admin_root
   end
 
-  root "home#index"
+  # Rota direta para admin#index
+  get "admin", to: "admin#index"
+
+  # Root padrão para usuários não autenticados
+  root to: "home#index"
 end
