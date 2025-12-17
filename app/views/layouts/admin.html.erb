@@ -42,57 +42,39 @@
           </h1>
         </div>
 
-        <!-- MENU -->
-        <ul class="flex flex-col text-gray-50 mt-6 space-y-1">
+        <ul class="flex flex-col text-gray-50">
+                <li>
+                    <%= link_to admin_categories_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
+                        <%= icon('fa-solid', 'gauge-high') %> 
+                        <span class="hidden md:inline-block">Dashboard</span>
 
-          <li>
-            <%= link_to admin_path,
-              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
-              <span class="w-6 text-center">
-                <i class="fa-solid fa-gauge-high"></i>
-              </span>
-              <span class="ml-4 hidden md:inline-block">Dashboard</span>
-            <% end %>
-          </li>
+                    <% end %>
+                </li>
+                <li>
+                    <%= link_to admin_categories_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
+                        <%= icon('fa-solid', 'cart-shopping') %> 
+                        <span class="hidden md:inline-block">Product</span>
 
-          <li>
-            <%= link_to admin_path,
-              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
-              <span class="w-6 text-center">
-                <i class="fa-solid fa-cart-shopping"></i>
-              </span>
-              <span class="ml-4 hidden md:inline-block">Product</span>
-            <% end %>
-          </li>
+                    <% end %>
+                </li>
+                <li>
+                    <%= link_to admin_categories_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
+                        <%= icon('fa-solid', 'list') %> 
+                        <span class="hidden md:inline-block">Categories</span>
 
-          <li>
-            <%= link_to admin_path,
-              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
-              <span class="w-6 text-center">
-                <i class="fa-solid fa-list"></i>
-              </span>
-              <span class="ml-4 hidden md:inline-block">Categories</span>
-            <% end %>
-          </li>
+                    <% end %>
+                </li>
+                <li>
+                    <%= link_to admin_categories_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
+                        <%= icon('fa-solid', 'truck-fast') %> 
+                        <span class="hidden md:inline-block">Orders</span>
 
-          <li>
-            <%= link_to admin_path,
-              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
-              <span class="w-6 text-center">
-                <i class="fa-solid fa-truck-fast"></i>
-              </span>
-              <span class="ml-4 hidden md:inline-block">Orders</span>
-            <% end %>
-          </li>
-
-        </ul>
-      </aside>
-
-      <!-- CONTEÚDO PRINCIPAL (ESPAÇO IGUAL AO VÍDEO) -->
-      <section class="flex-1 p-8 bg-gray-100">
-        <%= yield %>
-      </section>
-
+                    <% end %>
+                </li>
+            </ul>
+        </div>
+      </nav>
+      <%= yield %>
     </main>
   </body>
 </html>
