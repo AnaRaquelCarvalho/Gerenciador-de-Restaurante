@@ -1,56 +1,98 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
   <head>
-    <title>Ecommerce</title>
+    <title><%= content_for(:title) || "Gerenciador De Restaurante" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Gerenciador De Restaurante">
+    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    >
+
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="flex">
-      <nav class="flex w-full">
-        <div class="w-64 p-4 h-screen bg-gray-600 sticky top-0">
-            <div class="flex">
-                <%= image_tag "logo.png", class: 'w-16' %>
-                <h1 class="text-md py-2 text-gray-50 font-bold hidden md:block">FoodApp</h1>
-            </div>
-            <ul class="flex flex-col text-gray-50">
-                <li>
-                    <%= link_to admin_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-                        <%= icon('fa-solid', 'gauge-high') %> 
-                        <span class="hidden md:inline-block">Dashboard</span>
+  <body class="bg-gray-100">
+    <main class="flex min-h-screen">
 
-                    <% end %>
-                </li>
-                <li>
-                    <%= link_to admin_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-                        <%= icon('fa-solid', 'cart-shopping') %> 
-                        <span class="hidden md:inline-block">Product</span>
+      <!-- MENU LATERAL -->
+      <aside class="w-64 bg-gray-600 sticky top-0 h-screen p-4">
 
-                    <% end %>
-                </li>
-                <li>
-                    <%= link_to admin_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-                        <%= icon('fa-solid', 'list') %> 
-                        <span class="hidden md:inline-block">Categories</span>
-
-                    <% end %>
-                </li>
-                <li>
-                    <%= link_to admin_path, class:"block px-4 py-2 hover:rounded hover:bg-gray-700" do %>
-                        <%= icon('fa-solid', 'truck-fast') %> 
-                        <span class="hidden md:inline-block">Orders</span>
-
-                    <% end %>
-                </li>
-            </ul>
+        <!-- Logo -->
+        <div class="flex flex-col items-center text-center my-6">
+          <%= image_tag "logo.png", class: "w-20 mb-2" %>
+          <h1 class="text-md text-gray-50 font-bold hidden md:block">
+            Big King Burgers
+          </h1>
         </div>
-      </nav>
-      <%= yield %>
+
+        <!-- MENU -->
+        <ul class="flex flex-col text-gray-50 mt-6 space-y-1">
+
+          <li>
+            <%= link_to admin_path,
+              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
+              <span class="w-6 text-center">
+                <i class="fa-solid fa-gauge-high"></i>
+              </span>
+              <span class="ml-4 hidden md:inline-block">Dashboard</span>
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to admin_path,
+              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
+              <span class="w-6 text-center">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </span>
+              <span class="ml-4 hidden md:inline-block">Product</span>
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to admin_path,
+              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
+              <span class="w-6 text-center">
+                <i class="fa-solid fa-list"></i>
+              </span>
+              <span class="ml-4 hidden md:inline-block">Categories</span>
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to admin_path,
+              class: "px-4 py-2 hover:rounded hover:bg-gray-700 flex items-center justify-start" do %>
+              <span class="w-6 text-center">
+                <i class="fa-solid fa-truck-fast"></i>
+              </span>
+              <span class="ml-4 hidden md:inline-block">Orders</span>
+            <% end %>
+          </li>
+
+        </ul>
+      </aside>
+
+      <!-- CONTEÚDO PRINCIPAL (ESPAÇO IGUAL AO VÍDEO) -->
+      <section class="flex-1 p-8 bg-gray-100">
+        <%= yield %>
+      </section>
+
     </main>
   </body>
 </html>
