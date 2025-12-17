@@ -1,4 +1,4 @@
-class CategoriesController < AdminController
+class Admin::CategoriesController < AdminController
   before_action :set_admin_category, only: %i[ show edit update destroy ]
 
   # GET /admin/categories or /admin/categories.json
@@ -25,7 +25,7 @@ class CategoriesController < AdminController
 
     respond_to do |format|
       if @admin_category.save
-        format.html { redirect_to @admin_category, notice: "Category was successfully created." }
+        format.html { redirect_to admin_category_url(@admin_category), notice: "Category was successfully created." }
         format.json { render :show, status: :created, location: @admin_category }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class CategoriesController < AdminController
   def update
     respond_to do |format|
       if @admin_category.update(admin_category_params)
-        format.html { redirect_to @admin_category, notice: "Category was successfully updated.", status: :see_other }
+        format.html { redirect_to admin_category_url(@admin_category), notice: "Category was successfully updated." }
         format.json { render :show, status: :ok, location: @admin_category }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +52,7 @@ class CategoriesController < AdminController
     @admin_category.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_categories_path, notice: "Category was successfully destroyed.", status: :see_other }
+      format.html { redirect_to admin_categories_url, notice: "Category was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -60,11 +60,11 @@ class CategoriesController < AdminController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_admin_category
-      @admin_category = Category.find(params.expect(:id))
+      @admin_category = Category.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def admin_category_params
-      params.expect(admin_category: [ :name, :description ])
+      params.require(:category).permit(:name, :description)
     end
 end
