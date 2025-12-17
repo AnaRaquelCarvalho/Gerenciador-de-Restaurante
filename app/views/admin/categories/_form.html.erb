@@ -1,4 +1,7 @@
-<%= form_with(model: [:admin, admin_category], class: "contents") do |form| %>
+<%= form_with(model: [:admin, admin_category],
+              class: "contents",
+              html: { multipart: true }) do |form| %>
+
   <% if admin_category.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(admin_category.errors.count, "error") %> prohibited this admin_category from being saved:</h2>
@@ -13,15 +16,70 @@
 
   <div class="my-5">
     <%= form.label :name %>
-    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_field :name,
+          class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
+  <!-- descrição NÃO alterada -->
   <div class="my-5">
     <%= form.label :description %>
-    <%= form.text_area :description, rows: 4, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_area :description,
+          rows: 4,
+          class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <!-- imagem -->
+  <div class="my-5">
+    <%= form.label :image %>
+
+    <div class="flex items-center gap-3 mt-2">
+      <%= form.file_field :image,
+            id: "category_image",
+            class: "hidden",
+            accept: "image/*" %>
+
+      <button type="button"
+              onclick="document.getElementById('category_image').click()"
+              class="rounded-md bg-gray-100 border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200">
+        Procurar
+      </button>
+
+      <!-- texto que será substituído -->
+      <span id="image-status" class="text-sm text-gray-500">
+        Adicionar imagem
+      </span>
+    </div>
+
+    <!-- preview -->
+    <div id="image-preview-container" class="mt-2 hidden">
+      <img id="image-preview"
+     class="w-20 h-20 object-cover rounded-md border border-gray-200" />
+
+    </div>
   </div>
 
   <div class="inline">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener("change", function (event) {
+    if (event.target.id === "category_image" && event.target.files.length > 0) {
+      const file = event.target.files[0]
+
+      // substituir texto pelo nome do arquivo
+      const status = document.getElementById("image-status")
+      status.textContent = file.name
+      status.classList.remove("text-gray-500")
+      status.classList.add("text-green-600", "font-medium")
+
+      // mostrar preview
+      const preview = document.getElementById("image-preview")
+      const container = document.getElementById("image-preview-container")
+
+      preview.src = URL.createObjectURL(file)
+      container.classList.remove("hidden")
+    }
+  })
+</script>
