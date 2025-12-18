@@ -1,13 +1,10 @@
-<%= form_with(model: [:admin, admin_category],
-              class: "contents",
-              html: { multipart: true }) do |form| %>
-
-  <% if admin_category.errors.any? %>
+<%= form_with(model: [:admin, admin_product], class: "contents") do |form| %>
+  <% if admin_product.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(admin_category.errors.count, "error") %> prohibited this admin_category from being saved:</h2>
+      <h2><%= pluralize(admin_product.errors.count, "error") %> prohibited this admin_product from being saved:</h2>
 
       <ul>
-        <% admin_category.errors.each do |error| %>
+        <% admin_product.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -38,9 +35,11 @@
             class: "hidden",
             accept: "image/*" %>
 
-      <button type="button"
-              onclick="document.getElementById('category_image').click()"
-              class="rounded-md bg-gray-100 border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200">
+      <button
+        type="button"
+        onclick="document.getElementById('category_image').click()"
+        class="rounded-md bg-gray-100 border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200"
+      >
         Procurar
       </button>
 
@@ -52,9 +51,10 @@
 
     <!-- preview -->
     <div id="image-preview-container" class="mt-2 hidden">
-      <img id="image-preview"
-     class="w-20 h-20 object-cover rounded-md border border-gray-200" />
-
+      <img
+        id="image-preview"
+        class="w-20 h-20 object-cover rounded-md border border-gray-200"
+      />
     </div>
   </div>
 
@@ -65,7 +65,10 @@
 
 <script>
   document.addEventListener("change", function (event) {
-    if (event.target.id === "category_image" && event.target.files.length > 0) {
+    if (
+      event.target.id === "category_image" &&
+      event.target.files.length > 0
+    ) {
       const file = event.target.files[0]
 
       // substituir texto pelo nome do arquivo
