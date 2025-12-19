@@ -1,9 +1,15 @@
-<% content_for :title, "New product" %>
+<% content_for :title, "Novo produto" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New product</h1>
+<div class="w-full md:w-2/3">
+  <h1 class="text-4xl font-bold mb-6">
+    Novo produto
+  </h1>
 
   <%= render "form", admin_product: @admin_product %>
 
-  <%= link_to "Back to products", admin_products_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="mt-4">
+    <%= link_to "Voltar para produtos",
+          admin_products_path,
+          class: "inline-block rounded-md bg-gray-100 px-4 py-2.5 font-medium hover:bg-gray-200" %>
+  </div>
 </div>
