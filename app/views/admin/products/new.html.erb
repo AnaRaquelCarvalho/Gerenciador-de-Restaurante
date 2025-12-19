@@ -1,15 +1,25 @@
-<% content_for :title, "Novo produto" %>
+<h1>New Product</h1>
 
-<div class="w-full md:w-2/3">
-  <h1 class="text-4xl font-bold mb-6">
-    Novo produto
-  </h1>
-
-  <%= render "form", admin_product: @admin_product %>
-
-  <div class="mt-4">
-    <%= link_to "Voltar para produtos",
-          admin_products_path,
-          class: "inline-block rounded-md bg-gray-100 px-4 py-2.5 font-medium hover:bg-gray-200" %>
+<%= form_with model: [:admin, @product], local: true do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
   </div>
-</div>
+
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :price %>
+    <%= f.number_field :price %>
+  </div>
+
+  <div>
+    <%= f.label :images %>
+    <%= f.file_field :images, multiple: true %>
+  </div>
+
+  <%= f.submit "Save" %>
+<% end %>
