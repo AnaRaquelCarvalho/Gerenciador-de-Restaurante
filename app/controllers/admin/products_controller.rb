@@ -1,9 +1,9 @@
-class Admin::ProductsController < AdminController
+class Admin::ProductsController < ApplicationController
   before_action :set_admin_product, only: %i[ show edit update destroy ]
 
   # GET /admin/products or /admin/products.json
   def index
-    @admin_products = Product.all
+    @admin_product = Product.all
   end
 
   # GET /admin/products/1 or /admin/products/1.json
