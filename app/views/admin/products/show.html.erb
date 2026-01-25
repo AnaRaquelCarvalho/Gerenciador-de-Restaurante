@@ -13,17 +13,12 @@
           edit_admin_product_path(@admin_product),
           class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
 
-    <%= link_to "Back to products",
-          admin_product_path,
-          class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-
+    <%= link_to "Back to products", admin_product_path, 
+    class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <div class="inline-block ml-2">
-      <%= button_to "Destroy this product",
-            admin_product_path(@admin_product),
-            method: :delete,
+      <%= button_to "Destroy this product", admin_product_path(@admin_product), method: :delete,
             class: "rounded-lg py-3 px-5 bg-red-600 text-white font-medium",
             data: { turbo_confirm: "Are you sure?" } %>
     </div>
-
   </div>
 </div>

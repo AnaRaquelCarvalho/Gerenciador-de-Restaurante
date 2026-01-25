@@ -1,14 +1,13 @@
-Rails.application.routes.draw do  namespace :admin do
-    resources :products do
-      resources :stocks
-    end
-
+Rails.application.routes.draw do
+  namespace :admin do
+    resources :products
+    resources :stocks
     resources :categories
   end
-  devise_for :admins
-  root "home#index"
 
-  authenticated :admin_user do
+  devise_for :admins
+
+  authenticated :admin do
     root to: "admin#index", as: :admin_root
   end
 
