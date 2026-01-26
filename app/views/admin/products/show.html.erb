@@ -1,24 +1,52 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
+<h1 class="text-3xl font-bold mb-4">
+  <%= @product.name %>
+</h1>
 
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block">
-        <%= notice %>
-      </p>
+<p class="mb-3">
+  <strong>Description:</strong><br>
+  <%= @product.description %>
+</p>
+
+<p class="mb-3">
+  <strong>Price:</strong>
+  <%= number_to_currency(@product.price) %>
+</p>
+
+<p class="mb-3">
+  <strong>Category:</strong>
+  <%= @product.category&.name || "No category" %>
+</p>
+
+<p class="mb-3">
+  <strong>Status:</strong>
+  <%= @product.active? ? "Active" : "Inactive" %>
+</p>
+
+<!-- IMAGES -->
+<% if @product.images.attached? %>
+  <div class="flex gap-3 mt-4">
+    <% @product.images.each do |image| %>
+      <%= image_tag image, class: "w-24 h-24 object-cover rounded border" %>
     <% end %>
-
-    <%= render @admin_product %>
-
-    <%= link_to "Edit this product",
-          edit_admin_product_path(@admin_product),
-          class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-
-    <%= link_to "Back to products", admin_product_path, 
-    class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this product", admin_product_path(@admin_product), method: :delete,
-            class: "rounded-lg py-3 px-5 bg-red-600 text-white font-medium",
-            data: { turbo_confirm: "Are you sure?" } %>
-    </div>
   </div>
+<% else %>
+  <p>No images uploaded.</p>
+<% end %>
+
+<div class="mt-6 flex items-center gap-2">
+
+  <%= link_to "Edit this Products",
+      edit_admin_product_path(@product),
+      class: "px-4 py-2 bg-blue-600 text-white rounded" %>
+
+  <%= link_to "Back to Products",
+      admin_products_path,
+      class: "px-4 py-2 bg-gray-300 rounded" %>
+
+  <%= button_to "Destroy this Products",
+      admin_product_path(@product),
+      method: :delete,
+      form: { data: { turbo_confirm: "Are you sure?" } },
+      class: "px-4 py-2 bg-red-600 text-white rounded" %>
+
 </div>

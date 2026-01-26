@@ -1,137 +1,87 @@
-<h1 class="text-2xl font-bold text-gray-700 mb-4">
-  New Product
-</h1>
+<div class="md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl">New Product</h1>
 
-<%= form_with model: [:admin, @product],
-              local: true,
-              class: "space-y-8" do |f| %>
+  <%= form_with model: [:admin, @product], local: true, multipart: true, class: "contents" do |f| %>
 
-  <!-- Name -->
-  <div>
-    <%= f.label :name,
-                class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <!-- NAME -->
+    <div class="my-5">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+    </div>
 
-    <input
-      class="block shadow rounded-md border border-gray-200 outline-none px-3 py-1.5 mt-2 w-full"
-      type="text"
-      name="category[name]"
-      id="category_name">
-  </div>
+    <!-- DESCRIPTION -->
+    <div class="my-5">
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 4,
+          class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+    </div>
 
-  <!-- Description -->
-  <div>
-    <%= f.label :description,
-                class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <!-- IMAGE -->
+    <div class="my-5">
+      <label>Image</label>
 
-    <textarea
-      rows="4"
-      class="block shadow rounded-md border border-gray-200 outline-none px-3 py-1.5 mt-2 w-full"
-      name="category[description]"
-      id="category_description"></textarea>
-  </div>
+      <input id="product_image"
+             type="file"
+             name="product[images][]"
+             multiple
+             accept="image/*"
+             class="hidden">
 
-  <!-- Images -->
-  <div>
-    <%= f.label :image,
-                class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <button type="button"
+              onclick="document.getElementById('product_image').click()"
+              class="rounded-md bg-gray-100 border px-3 py-1.5 text-sm">
+        Procurar
+      </button>
 
-    <%= f.file_field :image,
-                     id: "product_image",
-                     class: "hidden",
-                     accept: "image/*" %>
+      <span id="image-status" class="text-sm text-gray-500">
+        Adicionar imagem
+      </span>
 
-    <button
-      type="button"
-      onclick="document.getElementById('product_image').click()"
-      class="rounded-md bg-gray-100 border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200">
-      Procurar
-    </button>
-
-    <span id="image-status" class="text-sm text-gray-500">
-      Adicionar imagem
-    </span>
-  </div>
-
-  <!-- Image Preview -->
-  <div id="image-preview-container" class="mt-2 hidden">
-    <img
-      id="image-preview"
-      class="w-20 h-20 object-cover rounded-md border border-gray-200">
-  </div>
-
-  <script>
-  document.addEventListener("change", function (event) {
-    if (event.target.id === "product_image" && event.target.files.length > 0) {
-      const file = event.target.files[0]
-
-      // substituir texto pelo nome do arquivo
-      const status = document.getElementById("image-status")
-      status.textContent = file.name
-      status.classList.remove("text-gray-500")
-      status.classList.add("text-green-600", "font-medium")
-
-      // mostrar preview
-      const preview = document.getElementById("image-preview")
-      const container = document.getElementById("image-preview-container")
-
-      preview.src = URL.createObjectURL(file)
-      container.classList.remove("hidden")
-    }
-  })
-</script>    
-
-  <!-- Price -->
-  <div>
-    <%= f.label :price_id,
-                "price",
-                class: "block text-sm font-medium text-gray-700 mb-1" %>
-
-    <input
-      step="0.01"
-      class="block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"
-      type="number"
-      name="product[price]"
-      id="product_price">
-  </div>
-
-  <!-- Category -->
-  <div class="flex items-center gap-3">
-    <%= f.label :category_id,
-                "Category",
-                class: "text-sm font-medium text-gray-700" %>
-
-    <%= f.collection_select :category_id,
-                            @categories,
-                            :id,
-                            :name,
-                            { prompt: "Select a category" },
-                            class: "text-gray-500 inline-block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 shadow-sm" %>
-  </div>
-
-  <!-- Active -->
-  <div class="flex items-center mt-3">
-    <%= f.check_box :active,
-                    class: "h-4 w-4 rounded border-gray-300 text-indigo-600" %>
-
-    <%= f.label :active,
-                class: "ml-2 text-sm text-gray-700" %>
-  </div>
-
-  <div class="inline">
-
-    <input type="submit" name="commit" value="Update Product" class="rounded-lg py-3 px-5 
-    bg-blue-600 text-white inline-block font-medium cursor-pointer" data-disable-with="Update Product">
-
-  </div>
-
-  </script>
-
-  <a class="ml-2 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium" href="/admin/products">
-  Show this Product</a>
-
-  <a class="ml-2 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium" href="/admin/products">
-  Back to Products</a>
-  </div>
+      <div id="image-preview-container" class="mt-2 hidden">
+        <img id="image-preview" class="w-20 h-20 object-cover rounded-md border">
       </div>
-    </main>
-<% end %>
+    </div>
+
+    <!-- PRICE -->
+    <div class="my-5">
+      <%= f.label :price %>
+      <%= f.number_field :price, step: 0.01,
+          class: "block shadow rounded-md border px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <!-- CATEGORY -->
+    <div class="my-5">
+      <%= f.label :category_id, "Category" %>
+      <%= f.collection_select :category_id, @categories, :id, :name,
+          { prompt: "Select a category" },
+          class: "block shadow rounded-md border px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <!-- ACTIVE -->
+    <div class="my-5 flex items-center">
+      <%= f.check_box :active %>
+      <%= f.label :active, class: "ml-2 text-sm" %>
+    </div>
+
+    <%= f.submit "Create Product",
+        class: "rounded-lg py-3 px-5 bg-blue-600 text-white font-medium" %>
+
+  <% end %>
+
+  <%= link_to "Back to Products",
+      admin_products_path,
+      class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+</div>
+
+<script>
+document.addEventListener("change", function(e){
+  if(e.target.id === "product_image"){
+    const file = e.target.files[0]
+    if(!file) return
+
+    document.getElementById("image-status").innerText = file.name
+    document.getElementById("image-preview").src = URL.createObjectURL(file)
+    document.getElementById("image-preview-container").classList.remove("hidden")
+  }
+})
+</script>

@@ -1,10 +1,84 @@
 <div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing product</h1>
+  <h1 class="font-bold text-4xl mb-6">Editing product</h1>
 
-  <%= render "form", admin_product: @admin_product %>
+  <%= form_with model: [:admin, @product], local: true, multipart: true do |f| %>
 
-  <%= link_to "Show this product", [:admin, @admin_product], class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 
-  inline-block font-medium" %>
-  <%= link_to "Back to products", admin_products_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 
-  inline-block font-medium" %>
+    <!-- NAME -->
+    <div class="my-5">
+      <%= f.label :name %>
+      <%= f.text_field :name,
+        class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="my-5">
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 4,
+        class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="my-5">
+      <label>Image</label>
+
+      <input id="product_image"
+             type="file"
+             name="product[images][]"
+             multiple
+             accept="image/*"
+             class="hidden">
+
+      <button type="button"
+              onclick="document.getElementById('product_image').click()"
+              class="rounded-md bg-gray-100 border px-3 py-1.5 text-sm">
+        Procurar
+      </button>
+
+      <span id="image-status" class="text-sm text-gray-500">
+        Adicionar imagem
+      </span>
+
+      <div id="image-preview-container" class="mt-2 hidden">
+        <img id="image-preview" class="w-20 h-20 object-cover rounded-md border">
+      </div>
+    </div>
+
+    <!-- PRICE -->
+    <div class="my-5">
+      <%= f.label :price %>
+      <%= f.number_field :price, step: 0.01,
+          class: "block shadow rounded-md border px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <!-- CATEGORY -->
+    <div class="my-5">
+      <%= f.label :category_id, "Category" %>
+      <%= f.collection_select :category_id, @categories, :id, :name,
+        { prompt: "Select a category" },
+        class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <!-- ACTIVE -->
+    <div class="my-5 flex items-center">
+      <%= f.check_box :active %>
+      <%= f.label :active, class: "ml-2" %>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="mt-6 flex flex-row items-center gap-3">
+
+      <%= f.submit "Update Product",
+        class: "rounded-lg py-3 px-5 bg-blue-600 text-white font-medium cursor-pointer" %>
+
+      <%= link_to "Show this product",
+        [:admin, @product],
+        class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+
+      <%= link_to "Back to products",
+        admin_products_path,
+        class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+
+    </div>
+
+  <% end %>
 </div>

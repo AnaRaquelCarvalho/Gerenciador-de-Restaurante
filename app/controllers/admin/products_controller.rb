@@ -11,7 +11,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def new
-    @product    = Product.new
+    @product = Product.new
     @categories = Category.all
   end
 
@@ -20,12 +20,11 @@ class Admin::ProductsController < ApplicationController
   end
 
   def create
-    @product    = Product.new(product_params)
+    @product = Product.new(product_params)
     @categories = Category.all
 
     if @product.save
-      redirect_to admin_product_path(@product),
-                  notice: "Produto criado com sucesso."
+      redirect_to edit_admin_product_path(@product)
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,8 +34,7 @@ class Admin::ProductsController < ApplicationController
     @categories = Category.all
 
     if @product.update(product_params)
-      redirect_to admin_product_path(@product),
-                  notice: "Produto atualizado com sucesso."
+      redirect_to edit_admin_product_path(@product)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -44,8 +42,7 @@ class Admin::ProductsController < ApplicationController
 
   def destroy
     @product.destroy
-    redirect_to admin_products_path,
-                notice: "O produto foi destruído com sucesso."
+    redirect_to admin_products_path
   end
 
   private
