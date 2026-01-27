@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   # Associations
   belongs_to :category
+  has_many :stocks
 
   # ActiveStorage
   has_many_attached :images do |attachable|
