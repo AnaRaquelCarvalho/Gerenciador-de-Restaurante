@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   # Associations
   belongs_to :category
-  has_many :stocks
+  has_many :stocks, dependent: :destroy
 
   # ActiveStorage
   has_many_attached :images do |attachable|
@@ -11,9 +11,10 @@ class Product < ApplicationRecord
   # Validations
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+
+  # Rails 5+ já exige belongs_to por padrão, mas manter não é errado
   validates :category, presence: true
 
-  # Optional: validação de imagens
   validate :images_type_and_size
 
   private
@@ -22,11 +23,11 @@ class Product < ApplicationRecord
     return unless images.attached?
 
     images.each do |image|
-      unless image.content_type.in?(%w[image/png image/jpeg image/jpg image/webp])
+      unless image.blob.content_type.in?(%w[image/png image/jpeg image/jpg image/webp])
         errors.add(:images, "devem ser PNG, JPG ou WEBP")
       end
 
-      if image.byte_size > 5.megabytes
+      if image.blob.byte_size > 5.megabytes
         errors.add(:images, "não podem ser maiores que 5MB")
       end
     end

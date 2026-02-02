@@ -1,74 +1,35 @@
-class Admin::StocksController < AdminController
-  before_action :set_admin_stock, only: %i[ show edit update destroy ]
+class Product < ApplicationRecord
+  # Associations
+  belongs_to :category
+  has_many :stocks, dependent: :destroy
 
-  # GET /admin/stocks or /admin/stocks.json
-  def index
-    @admin_stocks = Stock.where(product_id: params[:product_id])
+  # ActiveStorage
+  has_many_attached :images do |attachable|
+    attachable.variant :thumb, resize_to_limit: [ 50, 50 ]
   end
 
-  # GET /admin/stocks/1 or /admin/stocks/1.json
-  def show
-  end
+  # Validations
+  validates :name, presence: true
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # GET /admin/stocks/new
-  def new
-    @product = Product.find(params[:product_id])
-    @admin_stock = Stock.new
-  end
+  # Rails 5+ já exige belongs_to por padrão, mas manter não é errado
+  validates :category, presence: true
 
-  # GET /admin/stocks/1/edit
-  def edit
-    @product = Product.find(params[:product_id])
-    @admin_stock = Stock.find(params[:id])
-  end
-
-  # POST /admin/stocks or /admin/stocks.json
-  def create
-    @product = Product.find(params[:product_id])
-    @admin_stock = @product.stocks.new(admin_stock_params)
-
-    respond_to do |format|
-      if @admin_stock.save
-        format.html { redirect_to admin_product_stock_url(@product, @admin_stock), notice: "Stock was successfully created." }
-        format.json { render :show, status: :created, location: @admin_stock }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @admin_stock.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /admin/stocks/1 or /admin/stocks/1.json
-  def update
-    respond_to do |format|
-      if @admin_stock.update(admin_stock_params)
-        format.html { redirect_to admin_product_stock_url(@admin_stock.product, @admin_stock), notice: "Stock was successfully updated." }
-        format.json { render :show, status: :ok, location: @admin_stock }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @admin_stock.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /admin/stocks/1 or /admin/stocks/1.json
-  def destroy
-    @admin_stock.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to admin_product_stocks_url, notice: "Stock was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
+  validate :images_type_and_size
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_stock
-      @admin_stock = Stock.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def admin_stock_params
-      params.require(:stock).permit(:amount, :size)
+  def images_type_and_size
+    return unless images.attached?
+
+    images.each do |image|
+      unless image.blob.content_type.in?(%w[image/png image/jpeg image/jpg image/webp])
+        errors.add(:images, "devem ser PNG, JPG ou WEBP")
+      end
+
+      if image.blob.byte_size > 5.megabytes
+        errors.add(:images, "não podem ser maiores que 5MB")
+      end
     end
+  end
 end

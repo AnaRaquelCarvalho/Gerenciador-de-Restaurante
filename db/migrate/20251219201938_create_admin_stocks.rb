@@ -2,7 +2,7 @@ class CreateAdminStocks < ActiveRecord::Migration[8.1]
   def change
     create_table :stocks do |t|
       t.references :product, null: false, foreign_key: true
-      t.integer :amount
+      t.integer :quantity
       t.string :size
 
       t.timestamps
