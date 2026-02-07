@@ -1,6 +1,7 @@
 class Admin::ProductsController < ApplicationController
   layout "admin"
 
+  # Padronizado para @product como no curso
   before_action :set_product, only: %i[show edit update destroy]
 
   def index
@@ -24,7 +25,7 @@ class Admin::ProductsController < ApplicationController
     @categories = Category.all
 
     if @product.save
-      redirect_to edit_admin_product_path(@product)
+      redirect_to edit_admin_product_path(@product), notice: "Product created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -34,7 +35,8 @@ class Admin::ProductsController < ApplicationController
     @categories = Category.all
 
     if @product.update(product_params)
-      redirect_to edit_admin_product_path(@product)
+      # Redireciona para o edit para manter o fluxo da Onebitcode
+      redirect_to edit_admin_product_path(@product), notice: "Product updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -42,7 +44,7 @@ class Admin::ProductsController < ApplicationController
 
   def destroy
     @product.destroy
-    redirect_to admin_products_path
+    redirect_to admin_products_path, notice: "Product deleted."
   end
 
   private
@@ -53,12 +55,7 @@ class Admin::ProductsController < ApplicationController
 
   def product_params
     params.require(:product).permit(
-      :name,
-      :description,
-      :price,
-      :category_id,
-      :active,
-      images: []
+      :name, :description, :price, :category_id, :active, images: []
     )
   end
 end

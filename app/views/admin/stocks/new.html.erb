@@ -1,9 +1,20 @@
-<% content_for :title, "New stock" %>
-
-<div class="md:w-2/3 w-full">
+<div class="mx-auto md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">New stock</h1>
 
-  <%= render "form", admin_stock: @admin_stock %>
+  <%= form_with(model: [:admin, @product, @admin_stock], class: "contents") do |form| %>
+    <div class="my-5">
+      <%= form.label :amount %>
+      <%= form.number_field :amount, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
 
-  <%= link_to "Back to stocks", admin_product_stocks_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    <div class="my-5">
+      <%= form.label :size %>
+      <%= form.text_field :size, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="inline">
+      <%= form.submit "Create Stock", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+      <%= link_to "Back to stocks", admin_product_stocks_path(@product), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    </div>
+  <% end %>
 </div>

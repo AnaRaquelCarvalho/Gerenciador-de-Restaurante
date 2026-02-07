@@ -1,35 +1,69 @@
-class Product < ApplicationRecord
-  # Associations
-  belongs_to :category
-  has_many :stocks, dependent: :destroy
+class Admin::StocksController < AdminController
+  before_action :set_product
+  before_action :set_admin_stock, only: %i[show edit update destroy]
 
-  # ActiveStorage
-  has_many_attached :images do |attachable|
-    attachable.variant :thumb, resize_to_limit: [ 50, 50 ]
+  # GET /admin/products/:product_id/stocks
+  def index
+    @admin_stocks = @product.stocks
   end
 
-  # Validations
-  validates :name, presence: true
-  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  # GET /admin/products/:product_id/stocks/1
+  def show
+  end
 
-  # Rails 5+ já exige belongs_to por padrão, mas manter não é errado
-  validates :category, presence: true
+  # GET /admin/products/:product_id/stocks/new
+  def new
+    @admin_stock = @product.stocks.new
+  end
 
-  validate :images_type_and_size
+  # GET /admin/products/:product_id/stocks/1/edit
+  def edit
+  end
+
+  # POST /admin/products/:product_id/stocks
+  def create
+    @admin_stock = @product.stocks.new(admin_stock_params)
+
+    if @admin_stock.save
+      redirect_to admin_product_stocks_path(@product),
+                  notice: "Stock was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /admin/products/:product_id/stocks/1
+  def update
+    if @admin_stock.update(admin_stock_params)
+      redirect_to admin_product_stocks_path(@product),
+                  notice: "Stock was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /admin/products/:product_id/stocks/1
+  def destroy
+    @admin_stock.destroy!
+
+    redirect_to admin_product_stocks_path(@product),
+                notice: "Stock was successfully destroyed."
+  end
 
   private
 
-  def images_type_and_size
-    return unless images.attached?
+  # Define o produto pai para todas as ações (recurso aninhado)
+  def set_product
+    @product = Product.find(params[:product_id])
+  end
 
-    images.each do |image|
-      unless image.blob.content_type.in?(%w[image/png image/jpeg image/jpg image/webp])
-        errors.add(:images, "devem ser PNG, JPG ou WEBP")
-      end
+  # Define o estoque específico
+  def set_admin_stock
+    @admin_stock = @product.stocks.find(params[:id])
+  end
 
-      if image.blob.byte_size > 5.megabytes
-        errors.add(:images, "não podem ser maiores que 5MB")
-      end
-    end
+  # Permite apenas os parâmetros necessários para estoque
+  def admin_stock_params
+    params.require(:stock).permit(:amount, :size)
   end
 end

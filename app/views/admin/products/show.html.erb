@@ -1,52 +1,63 @@
-<h1 class="text-3xl font-bold mb-4">
-  <%= @product.name %>
-</h1>
+<% content_for :title, @product.name %>
 
-<p class="mb-3">
-  <strong>Description:</strong><br>
-  <%= @product.description %>
-</p>
+<div class="mx-auto md:w-2/3 w-full">
 
-<p class="mb-3">
-  <strong>Price:</strong>
-  <%= number_to_currency(@product.price) %>
-</p>
+  <h1 class="font-bold text-4xl mb-6">
+    <%= @product.name %>
+  </h1>
 
-<p class="mb-3">
-  <strong>Category:</strong>
-  <%= @product.category&.name || "No category" %>
-</p>
+  <div class="space-y-4">
 
-<p class="mb-3">
-  <strong>Status:</strong>
-  <%= @product.active? ? "Active" : "Inactive" %>
-</p>
+    <p>
+      <strong>Description:</strong><br>
+      <%= @product.description %>
+    </p>
 
-<!-- IMAGES -->
-<% if @product.images.attached? %>
-  <div class="flex gap-3 mt-4">
-    <% @product.images.each do |image| %>
-      <%= image_tag image, class: "w-24 h-24 object-cover rounded border" %>
+    <p>
+      <strong>Price:</strong>
+      <%= number_to_currency(@product.price) %>
+    </p>
+
+    <p>
+      <strong>Category:</strong>
+      <%= @product.category&.name || "No category" %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @product.active? ? "Active" : "Inactive" %>
+    </p>
+
+    <% if @product.images.attached? %>
+      <div class="flex gap-3 mt-4">
+        <% @product.images.each do |image| %>
+          <%= image_tag image,
+            class: "w-24 h-24 object-cover rounded-md border" %>
+        <% end %>
+      </div>
     <% end %>
+
   </div>
-<% else %>
-  <p>No images uploaded.</p>
-<% end %>
 
-<div class="mt-6 flex items-center gap-2">
+  <div class="mt-8 flex items-center gap-3">
 
-  <%= link_to "Edit this Products",
+    <%= link_to "Edit this product",
       edit_admin_product_path(@product),
-      class: "px-4 py-2 bg-blue-600 text-white rounded" %>
+      class: "rounded-lg py-3 px-5 bg-blue-600 text-white font-medium"
+    %>
 
-  <%= link_to "Back to Products",
+    <%= link_to "Back to products",
       admin_products_path,
-      class: "px-4 py-2 bg-gray-300 rounded" %>
+      class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
+    %>
 
-  <%= button_to "Destroy this Products",
+    <%= button_to "Destroy this product",
       admin_product_path(@product),
       method: :delete,
-      form: { data: { turbo_confirm: "Are you sure?" } },
-      class: "px-4 py-2 bg-red-600 text-white rounded" %>
+      data: { turbo_confirm: "Are you sure?" },
+      class: "rounded-lg py-3 px-5 bg-red-600 text-white font-medium"
+    %>
+
+  </div>
 
 </div>

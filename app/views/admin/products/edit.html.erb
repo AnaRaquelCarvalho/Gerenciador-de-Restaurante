@@ -2,83 +2,109 @@
   <h1 class="font-bold text-4xl mb-6">Editing product</h1>
 
   <%= form_with model: [:admin, @product], local: true, multipart: true do |f| %>
-
-    <!-- NAME -->
+    
+    <%# --- Name --- %>
     <div class="my-5">
-      <%= f.label :name %>
-      <%= f.text_field :name,
-        class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+      <%= f.label :name, class: "block font-medium mb-1" %>
+      <%= f.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
     </div>
 
-    <!-- DESCRIPTION -->
+    <%# --- Description --- %>
     <div class="my-5">
-      <%= f.label :description %>
-      <%= f.text_area :description, rows: 4,
-        class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+      <%= f.label :description, class: "block font-medium mb-1" %>
+      <%= f.text_area :description, rows: 4, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
     </div>
 
-    <!-- IMAGE -->
+    <%# --- SEÇÃO DE IMAGENS (Estilo Onebitcode) --- %>
     <div class="my-5">
-      <label>Image</label>
+      <%= f.label :images, "Images", class: "block font-medium mb-1" %>
 
-      <input id="product_image"
-             type="file"
-             name="product[images][]"
-             multiple
-             accept="image/*"
-             class="hidden">
+      <%# Exibe imagens já existentes no servidor %>
+      <% if @product.images.attached? %>
+        <div class="flex gap-2 mb-4">
+          <% @product.images.each do |image| %>
+            <%= image_tag image, class: "w-20 h-20 object-cover rounded-md border border-gray-200" %>
+          <% end %>
+        </div>
+      <% end %>
 
-      <button type="button"
-              onclick="document.getElementById('product_image').click()"
-              class="rounded-md bg-gray-100 border px-3 py-1.5 text-sm">
-        Procurar
-      </button>
+      <div class="flex items-center gap-3 mt-2">
+        <%# Campo escondido %>
+        <%= f.file_field :images, 
+            multiple: true, 
+            id: "product_images", 
+            class: "hidden", 
+            accept: "image/*" %>
 
-      <span id="image-status" class="text-sm text-gray-500">
-        Adicionar imagem
-      </span>
+        <button type="button"
+                onclick="document.getElementById('product_images').click()"
+                class="rounded-md bg-gray-100 border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200">
+          Procurar...
+        </button>
 
-      <div id="image-preview-container" class="mt-2 hidden">
-        <img id="image-preview" class="w-20 h-20 object-cover rounded-md border">
+        <span id="image-status" class="text-sm text-gray-500">
+          Nenhum arquivo selecionado.
+        </span>
       </div>
+
+      <%# Container para preview das NOVAS imagens selecionadas %>
+      <div id="image-preview-container" class="mt-4 flex gap-2 flex-wrap"></div>
     </div>
 
-    <!-- PRICE -->
+    <%# --- Price --- %>
     <div class="my-5">
-      <%= f.label :price %>
-      <%= f.number_field :price, step: 0.01,
-          class: "block shadow rounded-md border px-3 py-2 mt-2 w-full" %>
+      <%= f.label :price, class: "block font-medium mb-1" %>
+      <%= f.number_field :price, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
     </div>
 
-    <!-- CATEGORY -->
+    <%# --- Category --- %>
     <div class="my-5">
-      <%= f.label :category_id, "Category" %>
-      <%= f.collection_select :category_id, @categories, :id, :name,
-        { prompt: "Select a category" },
-        class: "block shadow rounded-md border border-gray-200 px-3 py-2 mt-2 w-full" %>
+      <%= f.label :category_id, "Category", class: "block font-medium mb-1" %>
+      <%= f.collection_select :category_id, Category.all, :id, :name, {}, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
     </div>
 
-    <!-- ACTIVE -->
-    <div class="my-5 flex items-center">
-      <%= f.check_box :active %>
-      <%= f.label :active, class: "ml-2" %>
+    <%# --- Active --- %>
+    <div class="my-5">
+      <%= f.check_box :active, class: "mr-2" %>
+      <%= f.label :active %>
     </div>
 
-    <!-- BUTTONS -->
-    <div class="mt-6 flex flex-row items-center gap-3">
-
-      <%= f.submit "Update Product",
-        class: "rounded-lg py-3 px-5 bg-blue-600 text-white font-medium cursor-pointer" %>
-
-      <%= link_to "Show this product",
-        [:admin, @product],
-        class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-
-      <%= link_to "Back to products",
-        admin_products_path,
-        class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-
+    <%# Link de Estoque %>
+    <div class="my-5">
+      <%= link_to "Product Stock", admin_product_stocks_path(@product), class: "underline text-blue-600 font-medium" %>
     </div>
 
+    <%# Botões de Ação %>
+    <div class="flex gap-2 items-center">
+      <%= f.submit "Update Product", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+      <%= link_to "Show this product", [:admin, @product], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <%= link_to "Back to products", admin_products_path, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    </div>
   <% end %>
 </div>
+
+<script>
+  document.addEventListener("change", function (event) {
+    if (event.target.id === "product_images" && event.target.files.length > 0) {
+      const files = event.target.files;
+      const status = document.getElementById("image-status");
+      const container = document.getElementById("image-preview-container");
+      
+      // Limpa previews anteriores
+      container.innerHTML = "";
+
+      // Atualiza o texto do status
+      status.textContent = files.length === 1 ? files[0].name : `${files.length} arquivos selecionados`;
+      status.classList.remove("text-gray-500");
+      status.classList.add("text-green-600", "font-medium");
+
+      // Gera os previews
+      Array.from(files).forEach(file => {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.className = "w-20 h-20 object-cover rounded-md border border-gray-200";
+        container.appendChild(img);
+      });
+    }
+  });
+</script>

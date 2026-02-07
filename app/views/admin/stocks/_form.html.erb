@@ -1,10 +1,13 @@
-<%= form_with(model: [:admin, @product, admin_stock], class: "contents") do |form| %>
-  <% if admin_stock.errors.any? %>
+<%# Adicionado @ em @product e @admin_stock %>
+<%= form_with(model: [:admin, @product, @admin_stock], class: "contents") do |form| %>
+  
+  <%# Adicionado @ em todas as chamadas de @admin_stock %>
+  <% if @admin_stock.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(admin_stock.errors.count, "error") %> prohibited this admin_stock from being saved:</h2>
+      <h2><%= pluralize(@admin_stock.errors.count, "error") %> prohibited this stock from being saved:</h2>
 
       <ul>
-        <% admin_stock.errors.each do |error| %>
+        <% @admin_stock.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -22,6 +25,6 @@
   </div>
 
   <div class="inline">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit "Save Stock", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
