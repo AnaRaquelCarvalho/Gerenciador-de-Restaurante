@@ -1,7 +1,7 @@
 <%= form_with(model: [:admin, product], class: "contents") do |form| %>
   <%# ... (mantenha os campos Name, Description, Price, etc.) ... %>
 
-  <%# Link 'Product Stock' exatamente como no curso %>
+  <%# Link 'Product Stock' %>
   <div class="my-5">
     <%= link_to "Product Stock", admin_product_stocks_path(product), class: "underline text-blue-600" %>
   </div>
