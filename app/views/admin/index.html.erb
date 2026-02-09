@@ -1,1 +1,50 @@
-<h2>Admin</h2>
+<div class="flex justify-between flex-wrap mt-8 w-full items-center max-w-4xl">
+    <h2 class="text-2xl text-gray-800 font-medium mb-4">Daily Stats</h2>
+    <div class="flex gap-10 flex-col md:flex-row justify-between w-full">
+        
+        <%# Card de Receita %>
+        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gradient-to-r from-gray-400 to-gray-300">
+            <div class="px-6 py-4">
+                <div class="font-bold text-xl mb-2 text-gray-800">Revenue</div>
+                <p class="text-gray-800 text-base">
+                    R$ <%= @stats_quick[:revenue] ? number_to_currency(@stats_quick[:revenue], unit: '', separator: ',', delimiter: '.') : "0" %>
+                </p>
+            </div>
+        </div>
+
+        <%# Card de Vendas Totais %>
+        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gradient-to-r from-gray-400 to-gray-300">
+            <div class="px-6 py-4">
+                <div class="font-bold text-xl mb-2 text-gray-800">Total Sales</div>
+                <p class="text-gray-800 text-base">
+                    <%= @stats_quick[:sales] || "0" %>
+                </p>
+            </div>
+        </div>
+
+        <%# Card de Média de Venda %>
+        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gradient-to-r from-gray-400 to-gray-300">
+            <div class="px-6 py-4">
+                <div class="font-bold text-xl mb-2 text-gray-800">Avg Sales</div>
+                <p class="text-gray-800 text-base">
+                    R$ <%= @stats_quick[:avg_sale] ? number_to_currency(@stats_quick[:avg_sale], unit: '', separator: ',', delimiter: '.') : "0" %>
+                </p>
+            </div>
+        </div>
+
+        <%# Card de Itens por Venda %>
+        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gradient-to-r from-gray-400 to-gray-300">
+            <div class="px-6 py-4">
+                <div class="font-bold text-xl mb-2 text-gray-800"> Products / Sales</div>
+                <p class="text-gray-800 text-base">
+                    <%= @stats_quick[:per_sale].to_i %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="my-8 w-full">
+            <h2 class="text-2xl text-gray-800 font-medium mb-4"> Graphic Revenues </h2>
+            <div class="w-full" data-controller="dashboard">
+            <canvas id="revenueChart"></canvas>
+    </div>
+</div>

@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   # Associations
   belongs_to :category
   has_many :stocks, dependent: :destroy
+  has_many :order_products
 
   # ActiveStorage
   has_many_attached :images do |attachable|
