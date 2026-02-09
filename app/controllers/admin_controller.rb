@@ -3,36 +3,36 @@ class AdminController < ApplicationController
   before_action :authenticate_admin!
 
   def index
+    # Busca os últimos 5 pedidos pendentes
     @orders = Order.where(fullfiled: false).order(created_at: :desc).take(5)
 
+    # Definimos o período de hoje (meia-noite até agora)
+    today_range = Time.now.midnight..Time.now
+
+    # Estatísticas Rápidas com tratamento para valores nulos (nil)
     @stats_quick = {
-      sales: Order.where(created_at: Time.now.midnight..Time.now).count,
-      revenue: Order.where(created_at: Time.now.midnight..Time.now).sum(:total).round(),
-      avg_sale: Order.where(created_at: Time.now.midnight..Time.now).average(:total).round(),
+      sales: Order.where(created_at: today_range).count,
+      # .to_f transforma nil em 0.0, evitando erro no .round()
+      revenue: Order.where(created_at: today_range).sum(:total).to_f.round(),
+      avg_sale: Order.where(created_at: today_range).average(:total).to_f.round(),
       per_sale: OrderProduct.joins(:order).where(
-        orders: {
-          created_at: Time.now.midnight..Time.now
-        }
-      ).average(:quantity)
+        orders: { created_at: today_range }
+      ).average(:quantity).to_f.round(2)
     }
 
+    # Lógica do Gráfico de Receita dos últimos 7 dias
     @orders_by_day = Order.where("created_at > ?", Time.now - 7.days).order(:created_at)
     @orders_by_day = @orders_by_day.group_by { |order| order.created_at.to_date }
 
-    @revenue_by_day = @orders_by_day.map { |day, orders| [ day.strftime("%A"), orders.sum(&:total) ] }
+    # Mapeia os dados existentes no banco
+    data_hash = @orders_by_day.transform_values { |orders| orders.sum(&:total) }
 
-    if @revenue_by_day.count < 7
-      days_of_week = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ]
-      data_hash = @revenue_by_day.to_h
-      current_day = Date.today.strftime("%A")
-      current_day_index = days_of_week.index(current_day)
-      next_day_index = (current_day_index + 1) % days_of_week.length
-
-      ordered_days_with_current_last = days_of_week[next_day_index..-1] + days_of_week[0..next_day_index]
-
-      @revenue_by_day = ordered_days_with_current_last.map { |day|
-        [ day, data_hash.fetch(day, 0) ]
-      }
-    end
+    # Cria uma lista dos nomes dos dias da semana (em inglês, como no seu original)
+    # Indo de 6 dias atrás até hoje
+    @revenue_by_day = (0..6).map do |i|
+      day_date = Date.today - i.days
+      day_name = day_date.strftime("%A")
+      [ day_name, data_hash.fetch(day_date, 0) ]
+    end.reverse # Reverte para que o dia atual seja o último no gráfico
   end
 end
