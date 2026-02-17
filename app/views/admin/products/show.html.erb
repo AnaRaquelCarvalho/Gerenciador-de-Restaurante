@@ -1,63 +1,35 @@
-<% content_for :title, @product.name %>
-
-<div class="mx-auto md:w-2/3 w-full">
-
-  <h1 class="font-bold text-4xl mb-6">
-    <%= @product.name %>
-  </h1>
-
-  <div class="space-y-4">
-
-    <p>
-      <strong>Description:</strong><br>
-      <%= @product.description %>
-    </p>
-
-    <p>
-      <strong>Price:</strong>
-      <%= number_to_currency(@product.price) %>
-    </p>
-
-    <p>
-      <strong>Category:</strong>
-      <%= @product.category&.name || "No category" %>
-    </p>
-
-    <p>
-      <strong>Status:</strong>
-      <%= @product.active? ? "Active" : "Inactive" %>
-    </p>
-
-    <% if @product.images.attached? %>
-      <div class="flex gap-3 mt-4">
+<h1>Product Show Page</h1>
+<div class="flex justify-center gap-20 py-10">
+    <div class="flex flex-wrap max-w-lg">
         <% @product.images.each do |image| %>
-          <%= image_tag image,
-            class: "w-24 h-24 object-cover rounded-md border" %>
+            <%= image_tag image, class:"w-auto h-64" %>
         <% end %>
-      </div>
-    <% end %>
-
-  </div>
-
-  <div class="mt-8 flex items-center gap-3">
-
-    <%= link_to "Edit this product",
-      edit_admin_product_path(@product),
-      class: "rounded-lg py-3 px-5 bg-blue-600 text-white font-medium"
-    %>
-
-    <%= link_to "Back to products",
-      admin_products_path,
-      class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
-    %>
-
-    <%= button_to "Destroy this product",
-      admin_product_path(@product),
-      method: :delete,
-      data: { turbo_confirm: "Are you sure?" },
-      class: "rounded-lg py-3 px-5 bg-red-600 text-white font-medium"
-    %>
-
-  </div>
-
+    </div>
+    <div data-controller="products" data-products-product-value="<%=@product.to_json %>" class="flex flex-col items-start max-w-sm">
+        <h1 class="font-bold text-4xl uppercase">
+            <%= @product.name %>
+        </h1>
+        <p class="text-2xl mt-4">
+            R$ <%= @product.price.to_s %>
+        </p>
+        <p class="text-md py-8">
+            <%= @product.description %>
+        </p>
+        <div class="my-8">
+            <p class="uppercase text-lg">Size</p>
+            <% @product.stocks.each do |stock| %>
+                <% if stock.amount > 0 %>
+                    <button data-action="click->products#selectSize" value="<%= stock.size %>" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded hover:bg-gray-300 focus:outline_none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                        <%= stock.size %>
+                    </button>
+                <% else %>
+                    <button disabled value="<%= stock.size %>" class="disabled:bg-gray-400 bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded hover:bg-gray-300 focus:outline_none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                        <%= stock.size %>
+                    </button> 
+                <% end %>
+            <% end %>
+        </div>
+        <div id="selected-size"></div>
+        <button data-action="click->products#addToCart" class="inline-flex items-center justify-center px-5 py-3 border-transparent font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Add to Cart</button>
+    </div>
 </div>

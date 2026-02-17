@@ -18,13 +18,43 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body>
-    <%= render "shared/navbar" %>
-    <main class="container mx-auto mt-28 max-w-7xl px-2 sm:px-6 lg:px-8">
+  <body class="bg-gray-50">
+    <%# --- NAVBAR REFEITA PARA FICAR IGUAL AO PRINT --- %>
+    <nav class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          
+          <%# Lado Esquerdo: Logo/Nome %>
+          <div class="flex items-center">
+            <a href="/" class="text-gray-600 font-medium hover:text-gray-900 transition">
+              Food
+            </a>
+          </div>
+
+          <%# Lado Direito: Ícone do Carrinho %>
+          <div class="flex items-center">
+            <a href="/cart" class="text-gray-600 hover:text-gray-900 transition p-2 relative">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <%# Opcional: Badge de quantidade (se quiser implementar depois) %>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <%# Espaçamento (mt-20) para o conteúdo não ficar embaixo da navbar fixa %>
+    <main class="container mx-auto mt-20 max-w-7xl px-4 sm:px-6 lg:px-8">
       <%= yield %>
     </main>
-    <%= render "shared/footer" %>
+
+    <%# O footer pode ser renderizado aqui ou conforme sua necessidade %>
+    <%# = render "shared/footer" %>
   </body>
 </html>

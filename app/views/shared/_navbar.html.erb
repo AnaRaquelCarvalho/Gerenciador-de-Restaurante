@@ -1,34 +1,38 @@
-<nav class="fixed w-full top-0 bg-gray-100 z-10 py-4">    
-    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div class="relative flex items-center justify-between h-16">
-            <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-between">
-                <div class="hidden sm:flex items-center justify-center">
-                    <div class="flex space-x-10">
-                        <%= link_to 'Shop', root_path, class: 'text-gray-500 hover:underline py-2 rounded-md 
-                        text-md font-medium' %>
-                    </div>
-                </div>
-                <div class="flex-shrink-0 flex items-center">
-                    <%= link_to root_path do %>
-                        <%= image_tag 'logo.png', class: 'block lg:hidden h-20 w-auto'%>
-                    <% end %>
-                    <%= link_to root_path do %>
-                        <%= image_tag 'logo.png', class: 'block lg:block h-20  w-auto'%>
-                    <% end %>
-                </div>
-                <div class="hidden sm:flex sml:ml-6 items-center justify-center">
-                    <div class="flex space-x-10">
-                            <%= link_to root_path, class: "text-gray-800 hover:underline py-2 rounded-md 
-                            text-xl" do %>
-                            <%= icon 'fa-solid', 'shopping-cart' %>
-                            <i class="fa-solid fa-cart-shopping"></i>
-
-                        <% end %>
-                    </div>
-                    </div>
-                    </nav>
-                </div>
-            </div>
+<nav class="fixed w-full top-0 bg-gray-100 z-50 py-4 shadow-sm">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="relative flex items-center justify-between h-16">
+      
+      <%# Lado Esquerdo: Link Shop %>
+      <div class="flex-1 flex items-center justify-start">
+        <div class="hidden sm:flex space-x-10">
+          <%= link_to 'Shop', root_path, class: 'text-gray-500 hover:text-gray-800 hover:underline py-2 rounded-md text-md font-medium' %>
         </div>
+      </div>
+
+      <%# Centro: Logo %>
+      <div class="flex-shrink-0 flex items-center">
+        <%= link_to root_path do %>
+          <%# Usei uma classe única para o logo ser responsivo %>
+          <%= image_tag 'logo.png', class: 'h-16 w-auto' %>
+        <% end %>
+      </div>
+
+      <%# Lado Direito: Carrinho %>
+      <div class="flex-1 flex items-center justify-end">
+        <div class="flex space-x-4">
+          <%# O link agora aponta para cart_path, resolvendo o erro de ID="carts" %>
+          <%= link_to cart_path, class: "text-gray-800 hover:text-blue-600 p-2 rounded-md text-2xl transition-colors" do %>
+            <i class="fa-solid fa-cart-shopping"></i>
+            <%# Contador opcional: mostra quantos itens tem no carrinho %>
+            <% if session[:cart].present? && session[:cart].length > 0 %>
+              <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full -ml-2 align-top">
+                <%= session[:cart].length %>
+              </span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
     </div>
+  </div>
 </nav>

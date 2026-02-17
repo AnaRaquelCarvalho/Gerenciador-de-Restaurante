@@ -1,25 +1,33 @@
 Rails.application.routes.draw do
-  # 1. Autenticação (Devise)
-  devise_for :admins
+  # --- SILENCIAR ERROS DE NAVEGADOR ---
+  get "/.well-known/appspecific/com.chrome.devtools.json", to: proc { [ 204, {}, [ "" ] ] }
+  get "/favicon.ico", to: proc { [ 204, {}, [ "" ] ] }
 
-  # 2. Área Administrativa (Namespace)
+  # --- ROTAS DE ADMIN ---
   namespace :admin do
     resources :orders
-    resources :categories
     resources :products do
       resources :stocks
     end
-    # Rota raiz do admin (dentro do namespace)
-    root to: "admin#index"
+    resources :categories
   end
 
-  # 3. Área Pública (O que o cliente vê)
+  devise_for :admins
+
+  # --- AUTENTICAÇÃO ---
+  authenticated :admin_user do
+    root to: "admin#index", as: :admin_root
+  end
+
+  # --- CARRINHO (IMPORTANTE: Antes de :products e :categories) ---
+  # Isso garante que /cart ou /carts nunca sejam confundidos com IDs de produtos
+  resource :cart, controller: "carts", only: [ :show, :create, :destroy ]
+  get "carts", to: "carts#show" # Atalho para aceitar o plural no navegador
+
+  # --- LOJA ---
   resources :categories, only: [ :show ]
   resources :products, only: [ :show ]
 
-  # 4. Raiz da Aplicação (Página inicial do site)
-  root "home#index"
-
-  # Atalho para o painel admin (opcional)
   get "admin" => "admin#index"
+  root "home#index"
 end
