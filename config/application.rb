@@ -1,43 +1,23 @@
 require_relative "boot"
-
 require "rails/all"
+require "stripe"
 
-# Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module GerenciadorDeRestaurante
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
-    # Please, add to the `ignore` list any other `lib` subdirectories that do
-    # not contain `.rb` files, or that should not be reloaded or eager loaded.
-    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    # ✅ CORREÇÃO PARA WINDOWS + POSTGRES:
+    # Força o Rails a tratar tudo como UTF-8 puro para evitar o erro 500
+    config.encoding = "utf-8"
+    Encoding.default_external = Encoding::UTF_8
+    Encoding.default_internal = Encoding::UTF_8
+
     config.autoload_lib(ignore: %w[assets tasks])
 
-    # ===============================
-    # ✅ CONFIGURAÇÃO DE ASSETS (Rails 8)
-    # ===============================
-
-    # Garante que imagens em app/assets/images sejam servidas
+    # ✅ CONFIGURAÇÃO DE ASSETS
     config.assets.paths << Rails.root.join("app/assets/images")
-
-    # Garante que imagens sejam compiladas
-    config.assets.precompile += %w[
-      *.png
-      *.jpg
-      *.jpeg
-      *.svg
-      *.webp
-    ]
-
-    # ===============================
-    # Configuration for the application, engines, and railties goes here.
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    config.assets.precompile += %w[ *.png *.jpg *.jpeg *.svg *.webp ]
   end
 end

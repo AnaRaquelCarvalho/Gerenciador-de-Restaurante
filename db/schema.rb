@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_08_203728) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_22_202714) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -86,6 +86,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_203728) do
     t.datetime "created_at", null: false
     t.string "customer_email"
     t.boolean "fullfiled"
+    t.integer "status"
+    t.string "stripe_checkout_id"
     t.integer "total"
     t.datetime "updated_at", null: false
   end

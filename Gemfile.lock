@@ -114,6 +114,9 @@ GEM
       responders
       warden (~> 1.2.3)
     dotenv (3.2.0)
+    dotenv-rails (3.2.0)
+      dotenv (= 3.2.0)
+      railties (>= 6.1)
     drb (2.2.3)
     ed25519 (1.4.0)
     erb (6.0.0)
@@ -122,6 +125,7 @@ GEM
       tzinfo
     ffi (1.17.2-x64-mingw-ucrt)
     ffi (1.17.2-x86_64-linux-gnu)
+    fiddle (1.1.8)
     font-awesome-sass (6.5.2)
       sassc (~> 2.0)
     fugit (1.12.1)
@@ -339,6 +343,7 @@ GEM
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.9)
+    stripe (18.3.1)
     tailwindcss-rails (4.4.0)
       railties (>= 7.0.0)
       tailwindcss-ruby (~> 4.0)
@@ -382,12 +387,15 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bcrypt (~> 3.1.7)
   bootsnap
   brakeman
   bundler-audit
   capybara
   debug
   devise (~> 4.9)
+  dotenv-rails
+  fiddle
   font-awesome-sass (~> 6.5.1)
   image_processing (~> 1.2)
   importmap-rails
@@ -403,6 +411,7 @@ DEPENDENCIES
   solid_cache
   solid_queue
   stimulus-rails
+  stripe
   tailwindcss-rails
   thruster
   turbo-rails
