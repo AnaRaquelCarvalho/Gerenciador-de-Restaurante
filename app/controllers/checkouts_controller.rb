@@ -48,3 +48,5 @@ class CheckoutsController < ApplicationController
     end
   end
 end
+
+
